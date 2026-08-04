@@ -1,3 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Cursive:wght@400..700&family=Pixelify+Sans:wght@400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+.edu-nsw-act-cursive-Edu {
+  font-family: "Edu NSW ACT Cursive", cursive;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
 *,
 *::before,
 *::after {
@@ -18,6 +27,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   padding: 2rem;
+  /* position: absolute; */
 }
 
 img,
@@ -63,9 +73,69 @@ h6 {
   isolation: isolate;
 }
 
+.hidden {
+  display: none;
+}
+
+body > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+body > div:first-child button {
+  padding: 0.4em 1.5em;
+  background-color: beige;
+  border: 1px solid #00000064;
+  border-radius: 2px;
+  font-size: large;
+}
+.modal {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: #00000064;
+  left: 0;
+  top: 0;
+  z-index: 1040;
+}
+.modal form {
+  position: fixed;
+  background-color: #fff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 4px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+.modal form > div {
+  margin: 0.5em 0;
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+}
+.modal form label {
+  font-size: small;
+}
+.modal form input {
+  border-radius: 2px;
+  border: 1px solid #00000064;
+}
+.modal form button {
+  align-self: end;
+  font-size: small;
+  padding: 0.2em 1.5em;
+  background-color: beige;
+  border: 1px solid #00000064;
+  border-radius: 2px;
+}
 .container {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1em;
 }
 
 .card {
@@ -73,8 +143,7 @@ h6 {
   padding: 2.3rem 2rem;
   border: 1px solid beige;
   border-radius: 4px;
-  flex-basis: 25%;
-  margin: 0 0.5em;
+  flex-basis: 22%;
 }
 
 .card > div {
