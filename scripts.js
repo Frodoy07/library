@@ -16,12 +16,6 @@ const Book = function (title, author, pages, isRead = false, id) {
   this.pages = pages;
   this.isRead = isRead;
   this.id = id;
-
-  this.info = function () {
-    console.log(
-      `${this.title} by ${this.author}, ${this.pages} pages, ${this.isRead ? "is read already." : "not read yet."}`,
-    );
-  };
 };
 
 const addBookToLibrary = function (title, author, pages, isRead) {
@@ -31,32 +25,34 @@ const addBookToLibrary = function (title, author, pages, isRead) {
   myLibrary.push(newBook);
 };
 
-addBookToLibrary("Rich Dad, Poor Dad", "Robert Kiyosaki", 400, false);
-addBookToLibrary("The Personal MBA", "Josh Kauffman", 540, false);
-addBookToLibrary("Think and Grow Rich", "Napoleon Hill", 220, false);
-
-const displayLibrary = function () {
-  myLibrary.forEach((el) => {
-    container.insertAdjacentHTML(
-      "beforeend",
-      `
-        <div class="card">
-              <div>
-                    <h3>Title:</h3>
-                    <p>${el.title}</p>
-              </div>
-              <div>
-                    <h3>Author:</h3>
-                    <p>${el.author}</p>
-              </div>
-              <div>
-                    <h3>Pages:</h3>
-                    <p>${el.pages}</p>
-              </div>
+const displayBook = function (book) {
+  container.insertAdjacentHTML(
+    "beforeend",
+    `
+        <div class="card" data-id="${book.id}">
+          <div>
+                <h3>Title:</h3>
+                <p>${book.title}</p>
+          </div>
+          <div>
+                <h3>Author:</h3>
+                <p>${book.author}</p>
+          </div>
+          <div>
+                <h3>Pages:</h3>
+                <p>${book.pages}</p>
+          </div>
+          <div>
+            <h3>Read:</h3>
+            <p>${book.isRead ? "✔️" : "❌"}</p>
+          </div>
+          <div>
+            <button type="button" id="readToggleBtn"><i class="fa-solid fa-book-open"></i></button>
+            <button type="button" id="deleteBook"><i class="fa-solid fa-trash-can"></i></button>
+          </div>
         </div>
       `,
-    );
-  });
+  );
 };
 
 // -------- Event Listeners ---------
@@ -79,9 +75,58 @@ submitBook.addEventListener("click", function (e) {
   const currentPages = pages.value;
   const isRead = radio.checked;
 
-  console.log(currentTitle, currentAuthor, currentPages, isRead);
   addBookToLibrary(title.value, author.value, pages.value, radio.checked);
-  console.log(myLibrary);
   modal.classList.add("hidden");
-  displayLibrary();
+  displayBook(myLibrary.at(-1));
+
+  title.value = "";
+  author.value = "";
+  pages.value = "";
+  radio.checked = false;
+});
+
+container.addEventListener("click", (e) => {
+  const deleteBook = e.target.closest("#deleteBook");
+  const readToggleBtn = e.target.closest("#readToggleBtn");
+  const card = e.target.closest(".card");
+  const nodeList = document.getElementsByClassName("card");
+  const index = myLibrary.findIndex((book) => book.id === card.dataset.id);
+
+  if (deleteBook) {
+    if (index !== -1) {
+      myLibrary.splice(index, 1);
+      card.remove();
+    }
+  } else if (readToggleBtn) {
+    if (index !== -1) {
+      console.log(index);
+      myLibrary[index].isRead = !myLibrary[index].isRead;
+      const newDiv = document.createElement("div");
+      newDiv.classList.add("card");
+      newDiv.dataset.id = myLibrary[index].id;
+      newDiv.innerHTML = `
+         <div>
+                <h3>Title:</h3>
+                <p>${myLibrary[index].title}</p>
+          </div>
+          <div>
+                <h3>Author:</h3>
+                <p>${myLibrary[index].author}</p>
+          </div>
+          <div>
+                <h3>Pages:</h3>
+                <p>${myLibrary[index].pages}</p>  
+          </div>
+          <div>
+            <h3>Read:</h3>
+            <p>${myLibrary[index].isRead ? "✔️" : "❌"}</p>
+          </div>
+          <div>
+            <button type="button" id="readToggleBtn"><i class="fa-solid fa-book-open"></i></button>
+            <button type="button" id="deleteBook"><i class="fa-solid fa-trash-can"></i></button>
+          </div>
+      `;
+      nodeList[index].replaceWith(newDiv);
+    }
+  }
 });

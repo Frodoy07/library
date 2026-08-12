@@ -27,7 +27,9 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   padding: 2rem;
-  /* position: absolute; */
+  background: url("polygon-scatter-haikei.png");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 img,
@@ -82,6 +84,7 @@ body > div:first-child {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 2rem;
+  color: #fff;
 }
 body > div:first-child button {
   padding: 0.4em 1.5em;
@@ -139,18 +142,26 @@ body > div:first-child button {
 }
 
 .card {
-  background-color: beige;
-  padding: 2.3rem 2rem;
+  background-color: #f5f5dc;
+  padding: 2rem 2rem;
   border: 1px solid beige;
   border-radius: 4px;
   flex-basis: 22%;
+  display: flex;
+  flex-direction: column;
 }
 
 .card > div {
   display: flex;
   align-items: center;
+  gap: 0.6em;
 }
 
-.card > div p {
-  margin-left: 0.6em;
+.card > div:last-child {
+  margin-top: 2em;
+  align-self: end;
+}
+
+.card > div:last-child button {
+  color: #222725;
 }
