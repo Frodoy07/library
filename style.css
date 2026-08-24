@@ -102,6 +102,10 @@ body > div:first-child button {
   top: 0;
   z-index: 1040;
 }
+.modal .close-btn {
+  font-size: 1.3em;
+  align-self: last baseline;
+}
 .modal form {
   position: fixed;
   background-color: #fff;

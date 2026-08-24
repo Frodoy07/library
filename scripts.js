@@ -9,7 +9,9 @@ const radio = document.querySelector("#read");
 const title = document.querySelector("#title");
 const author = document.querySelector("#author");
 const pages = document.querySelector("#pages");
+const close_btn = document.querySelector(".close-btn");
 
+// Functions:
 const Book = function (title, author, pages, isRead = false, id) {
   this.title = title;
   this.author = author;
@@ -25,34 +27,59 @@ const addBookToLibrary = function (title, author, pages, isRead) {
   myLibrary.push(newBook);
 };
 
-const displayBook = function (book) {
-  container.insertAdjacentHTML(
-    "beforeend",
-    `
-        <div class="card" data-id="${book.id}">
-          <div>
-                <h3>Title:</h3>
-                <p>${book.title}</p>
-          </div>
-          <div>
-                <h3>Author:</h3>
-                <p>${book.author}</p>
-          </div>
-          <div>
-                <h3>Pages:</h3>
-                <p>${book.pages}</p>
-          </div>
-          <div>
-            <h3>Read:</h3>
-            <p>${book.isRead ? "✔️" : "❌"}</p>
-          </div>
-          <div>
-            <button type="button" id="readToggleBtn"><i class="fa-solid fa-book-open"></i></button>
-            <button type="button" id="deleteBook"><i class="fa-solid fa-trash-can"></i></button>
-          </div>
+const newBookCard = (book, replace = false) => {
+  const div = !replace
+    ? `
+      <div class='card' data-id='${book.id}'>
+              <div>
+                    <h3>Title:</h3>
+                    <p>${book.title}</p>
+              </div>
+              <div>
+                    <h3>Author:</h3>
+                    <p>${book.author}</p>
+              </div>
+              <div>
+                    <h3>Pages:</h3>
+                    <p>${book.pages}</p>  
+              </div>
+              <div>
+                <h3>Read:</h3>
+                <p>${book.isRead ? "✔️" : "❌"}</p>
+              </div>
+              <div>
+                <button type="button" id="readToggleBtn"><i class="fa-solid fa-book-open"></i></button>
+                <button type="button" id="deleteBook"><i class="fa-solid fa-trash-can"></i></button>
+              </div>
         </div>
-      `,
-  );
+    `.trim()
+    : `
+       <div>
+                    <h3>Title:</h3>
+                    <p>${book.title}</p>
+              </div>
+              <div>
+                    <h3>Author:</h3>
+                    <p>${book.author}</p>
+              </div>
+              <div>
+                    <h3>Pages:</h3>
+                    <p>${book.pages}</p>  
+              </div>
+              <div>
+                <h3>Read:</h3>
+                <p>${book.isRead ? "✔️" : "❌"}</p>
+              </div>
+              <div>
+                <button type="button" id="readToggleBtn"><i class="fa-solid fa-book-open"></i></button>
+                <button type="button" id="deleteBook"><i class="fa-solid fa-trash-can"></i></button>
+              </div>`.trim();
+
+  return div;
+};
+
+const displayBook = (book) => {
+  container.insertAdjacentHTML("beforeend", newBookCard(book));
 };
 
 // -------- Event Listeners ---------
@@ -70,10 +97,10 @@ addBook.addEventListener("click", function () {
 });
 submitBook.addEventListener("click", function (e) {
   e.preventDefault();
-  const currentTitle = title.value;
-  const currentAuthor = author.value;
-  const currentPages = pages.value;
-  const isRead = radio.checked;
+  // const currentTitle = title.value;
+  // const currentAuthor = author.value;
+  // const currentPages = pages.value;
+  // const isRead = radio.checked;
 
   addBookToLibrary(title.value, author.value, pages.value, radio.checked);
   modal.classList.add("hidden");
@@ -99,34 +126,16 @@ container.addEventListener("click", (e) => {
     }
   } else if (readToggleBtn) {
     if (index !== -1) {
-      console.log(index);
       myLibrary[index].isRead = !myLibrary[index].isRead;
       const newDiv = document.createElement("div");
-      newDiv.classList.add("card");
       newDiv.dataset.id = myLibrary[index].id;
-      newDiv.innerHTML = `
-         <div>
-                <h3>Title:</h3>
-                <p>${myLibrary[index].title}</p>
-          </div>
-          <div>
-                <h3>Author:</h3>
-                <p>${myLibrary[index].author}</p>
-          </div>
-          <div>
-                <h3>Pages:</h3>
-                <p>${myLibrary[index].pages}</p>  
-          </div>
-          <div>
-            <h3>Read:</h3>
-            <p>${myLibrary[index].isRead ? "✔️" : "❌"}</p>
-          </div>
-          <div>
-            <button type="button" id="readToggleBtn"><i class="fa-solid fa-book-open"></i></button>
-            <button type="button" id="deleteBook"><i class="fa-solid fa-trash-can"></i></button>
-          </div>
-      `;
+      newDiv.classList.add("card");
+      newDiv.innerHTML = newBookCard(myLibrary[index], true);
       nodeList[index].replaceWith(newDiv);
     }
   }
+});
+
+close_btn.addEventListener("click", () => {
+  modal.classList.add("hidden");
 });
