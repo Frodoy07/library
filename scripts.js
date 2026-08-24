@@ -4,8 +4,9 @@ const myLibrary = [];
 const container = document.querySelector(".container");
 const addBook = document.querySelector("#addBook");
 const modal = document.querySelector(".modal");
-const submitBook = document.querySelector("#submitBook");
+// const submitBook = document.querySelector("#submitBook");
 const radio = document.querySelector("#read");
+const form = document.querySelector("form");
 const title = document.querySelector("#title");
 const author = document.querySelector("#author");
 const pages = document.querySelector("#pages");
@@ -48,8 +49,8 @@ const newBookCard = (book, replace = false) => {
                 <p>${book.isRead ? "✔️" : "❌"}</p>
               </div>
               <div>
-                <button type="button" id="readToggleBtn"><i class="fa-solid fa-book-open"></i></button>
-                <button type="button" id="deleteBook"><i class="fa-solid fa-trash-can"></i></button>
+                <button type="button" class="read-toggle-btn"><i class="fa-solid fa-book-open"></i></button>
+                <button type="button" class="delete-btn"><i class="fa-solid fa-trash-can"></i></button>
               </div>
         </div>
     `.trim()
@@ -71,8 +72,8 @@ const newBookCard = (book, replace = false) => {
                 <p>${book.isRead ? "✔️" : "❌"}</p>
               </div>
               <div>
-                <button type="button" id="readToggleBtn"><i class="fa-solid fa-book-open"></i></button>
-                <button type="button" id="deleteBook"><i class="fa-solid fa-trash-can"></i></button>
+                <button type="button" class="read-toggle-btn"><i class="fa-solid fa-book-open"></i></button>
+                <button type="button" class="delete-btn"><i class="fa-solid fa-trash-can"></i></button>
               </div>`.trim();
 
   return div;
@@ -83,19 +84,10 @@ const displayBook = (book) => {
 };
 
 // -------- Event Listeners ---------
-radio.addEventListener("click", (event) => {
-  if (event.target.dataset.wasChecked === "true") {
-    event.target.checked = false;
-    event.target.dataset.wasChecked = "false";
-  } else {
-    event.target.checked = true;
-    event.target.dataset.wasChecked = "true";
-  }
-});
 addBook.addEventListener("click", function () {
   modal.classList.remove("hidden");
 });
-submitBook.addEventListener("click", function (e) {
+form.addEventListener("submit", function (e) {
   e.preventDefault();
   // const currentTitle = title.value;
   // const currentAuthor = author.value;
@@ -113,9 +105,10 @@ submitBook.addEventListener("click", function (e) {
 });
 
 container.addEventListener("click", (e) => {
-  const deleteBook = e.target.closest("#deleteBook");
-  const readToggleBtn = e.target.closest("#readToggleBtn");
+  const deleteBook = e.target.closest(".delete-btn");
+  const readToggleBtn = e.target.closest(".read-toggle-btn");
   const card = e.target.closest(".card");
+  if (!card) return;
   const nodeList = document.getElementsByClassName("card");
   const index = myLibrary.findIndex((book) => book.id === card.dataset.id);
 
